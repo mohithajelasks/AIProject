@@ -113,8 +113,7 @@
 
       const webhookUrl = "https://demopolicy.app.n8n.cloud/webhook/90cfb756-469a-43e2-95fc-7da821a6b650";
 
-      try {
-        const response = await fetch(webhookUrl, {
+      const response = await fetch(webhookUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -122,13 +121,13 @@
 
         if (response.ok) {
           alert("Report card updated successfully!");
-        } else {
+        } 
+        else {
           alert("Error submitting request. Please try again.");
         }
-      } catch (error) {
-        alert("Network error. Please try again later.");
-      }
+      
     });
   </script>
 </body>
 </html>
+
