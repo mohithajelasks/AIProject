@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Class 7 Student Report Card</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h2, h3 { text-align: center; color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #f0f0f0; }
+    .section { margin-bottom: 30px; }
+    .note { font-size: 14px; color: #777; text-align: center; }
+    button { background: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
+    button:hover { background: #45a049; }
+    input { width: 95%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Class 7 Report Card</h2>
+    <form id="reportForm">
+
+      <!-- Parent & Student Info -->
+      <div class="section">
+        <h3>Student & Parent Information</h3>
+        <table>
+          <tr><th>Student ID</th><td><input type="text" name="student_id" value="S101"></td></tr>
+          <tr><th>Student Name</th><td><input type="text" name="student_name" value="Mohit Hajela"></td></tr>
+          <tr><th>Parent Name</th><td><input type="text" name="parent_name" value="Rajneesh Hajela"></td></tr>
+          <tr><th>Email</th><td><input type="email" name="parent_email" value="parent@example.com"></td></tr>
+          <tr><th>Mobile</th><td><input type="tel" name="parent_mobile" value="+91-9876543210"></td></tr>
+          <tr><th>Address</th><td><input type="text" name="address" value="Thane"></td></tr>
+          <tr><th>Parent Job Profile</th><td><input type="text" name="parent_job" value="AI Architect"></td></tr>
+        </table>
+      </div>
+
+      <!-- Semester 1 -->
+      <div class="section">
+        <h3>Semester 1 Performance</h3>
+        <table>
+          <tr><th>Math</th><th>Science</th><th>English</th><th>History</th><th>Attendance</th><th>Teacher Notes</th></tr>
+          <tr>
+            <td><input type="text" name="sem1_math" value="95"></td>
+            <td><input type="text" name="sem1_science" value="92"></td>
+            <td><input type="text" name="sem1_english" value="92"></td>
+            <td><input type="text" name="sem1_history" value="88"></td>
+            <td><input type="text" name="sem1_attendance" value="95%"></td>
+            <td><input type="text" name="sem1_notes" value="Strong in Science, needs improvement in History"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Semester 2 -->
+      <div class="section">
+        <h3>Semester 2 Performance</h3>
+        <table>
+          <tr><th>Math</th><th>Science</th><th>English</th><th>History</th><th>Attendance</th><th>Teacher Notes</th></tr>
+          <tr>
+            <td><input type="text" name="sem2_math" value="72"></td>
+            <td><input type="text" name="sem2_science" value="95"></td>
+            <td><input type="text" name="sem2_english" value="87"></td>
+            <td><input type="text" name="sem2_history" value="90"></td>
+            <td><input type="text" name="sem2_attendance" value="96%"></td>
+            <td><input type="text" name="sem2_notes" value="Science strong, math declined"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Activities -->
+      <div class="section">
+        <h3>Other Activities</h3>
+        <table>
+          <tr><th>Activity Type</th><th>Activity Name</th><th>Participation</th><th>Result</th><th>Remarks</th></tr>
+          <tr>
+            <td><input type="text" name="activity_type1" value="Art"></td>
+            <td><input type="text" name="activity_name1" value="Painting"></td>
+            <td><input type="text" name="participation1" value="Yes"></td>
+            <td><input type="text" name="result1" value="Winner"></td>
+            <td><input type="text" name="remarks1" value="Won 2nd prize in district art competition"></td>
+          </tr>
+          <tr>
+            <td><input type="text" name="activity_type2" value="Olympiad"></td>
+            <td><input type="text" name="activity_name2" value="Math Olympiad"></td>
+            <td><input type="text" name="participation2" value="Yes"></td>
+            <td><input type="text" name="result2" value="Participation"></td>
+            <td><input type="text" name="remarks2" value="Strong effort in Olympiad (Gold Coin)"></td>
+          </tr>
+          <tr>
+            <td><input type="text" name="activity_type3" value="Dance"></td>
+            <td><input type="text" name="activity_name3" value="Annual Dance"></td>
+            <td><input type="text" name="participation3" value="Yes"></td>
+            <td><input type="text" name="result3" value="Participation"></td>
+            <td><input type="text" name="remarks3" value="Needs improvement (Score 3/10)"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit">Confirm & Save Report Card</button>
+      <p class="note">Parents can edit details before submission. The school system will update the record via n8n webhook.</p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("reportForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = {};
+      formData.forEach((value, key) => { data[key] = value; });
+
+      const webhookUrl = "https://demopolicy.app.n8n.cloud/webhook/90cfb756-469a-43e2-95fc-7da821a6b650";
+
+      try {
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          alert("Report card updated successfully!");
+        } else {
+          alert("Error submitting request. Please try again.");
+        }
+      } catch (error) {
+        alert("Network error. Please try again later.");
+      }
+    });
+  </script>
+</body>
+</html>
